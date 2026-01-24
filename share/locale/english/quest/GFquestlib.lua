@@ -21,29 +21,27 @@
 function get_random_vnum_from_table(items)
 	local temp_table = {}
 	local playerLevel = pc.get_level()
-	table.foreachi(items, 
-		function(index, item)
-			local itemProbability = item[2]
-			local itemVnum = item[1]
-			local meetsLevelLimit = true
-			if table.getn(item) > 2 then -- minLevel is given for this item
-				if playerLevel < item[3] then
-					meetsLevelLimit = false
-				end
-				if table.getn(item) > 3 then -- maxLevel is given for this item
-					if playerLevel > item[4] then
-						meetsLevelLimit = false
-					end
-				end
+	for index, item in ipairs(items) do
+		local itemProbability = item[2]
+		local itemVnum = item[1]
+		local meetsLevelLimit = true
+		if #item > 2 then -- minLevel is given for this item
+			if playerLevel < item[3] then
+				meetsLevelLimit = false
 			end
-			if meetsLevelLimit then
-				for amount = 1, itemProbability do
-					table.insert(temp_table, itemVnum)
+			if #item > 3 then -- maxLevel is given for this item
+				if playerLevel > item[4] then
+					meetsLevelLimit = false
 				end
 			end
 		end
-	)
-	return temp_table[math.random(table.getn(temp_table))]
+		if meetsLevelLimit then
+			for amount = 1, itemProbability do
+				table.insert(temp_table, itemVnum)
+			end
+		end
+	end
+	return temp_table[math.random(#temp_table)]
 end
 
 function get_time_remaining(seconds)

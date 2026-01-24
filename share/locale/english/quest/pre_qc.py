@@ -184,8 +184,9 @@ def run(filename):
 	out_dir = Path("pre_qc")
 	out_dir.mkdir(parents=True, exist_ok=True)
 	out_path = out_dir / filename
+	out_path.parent.mkdir(parents=True, exist_ok=True)
 
-	with open(out_path, "w", newline="") as f:
+	with open(out_path, "w", newline="", encoding="utf-8") as f:
 		for s in r:
 			f.write(s)
 	return True

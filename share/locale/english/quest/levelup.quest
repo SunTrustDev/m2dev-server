@@ -44,9 +44,9 @@ quest levelup begin
 
             say("")
 
-            if lev <= table.getn(special.levelup_reward1) then
+            if lev <= #special.levelup_reward1 then
                 raw_script(item_name(special.levelup_reward1[lev][pc.job+1]))
-            elseif lev> table.getn(special.levelup_reward1) and lev < 26 then
+            elseif lev> #special.levelup_reward1 and lev < 26 then
                 raw_script(locale.levelup.random_item)
             end	
             if lev>=21 then
@@ -60,7 +60,7 @@ quest levelup begin
                 elseif lev >= 84 and lev <= 90 then
                     reward_gold = special.levelup_reward_gold51
                 end
-                local max_gold_i = table.getn(reward_gold)
+                local max_gold_i = #reward_gold
                 raw_script(reward_gold[1][1].."-"..reward_gold[max_gold_i][1].." "..locale.gold)
             end
 
@@ -108,7 +108,7 @@ quest levelup begin
                     say("")
 
                 if lev <= 20 then 
-                    if lev <= table.getn(special.levelup_reward1) then
+                    if lev <= #special.levelup_reward1 then
                         pc.give_item(gameforge.levelup._64_give..lev..gameforge.levelup._65_give, 
                         special.levelup_reward1[lev][pc.job+1])
                     else
@@ -140,7 +140,7 @@ quest levelup begin
                     local ll = lev - 20
                     if lev < 26 then
 
-                        local n = table.getn(special.levelup_reward_item_21[ll])
+                        local n = #special.levelup_reward_item_21[ll]
                         local t = special.levelup_reward_item_21[ll][number(1, n)]
                         say_reward(gameforge.levelup._80_sayReward)
                         if type(t) == 'table' then
@@ -172,7 +172,7 @@ quest levelup begin
 
                     n = number(0, 99)
                     local i = 0
-                    for i = 1, table.getn(reward_gold) do
+                    for i = 1, #reward_gold do
                         if n < reward_gold[i][2] then
                             pc.change_money(reward_gold[i][1])
                             say_reward(string.format(gameforge.levelup._110_sayReward, reward_gold[i][1]))
@@ -185,7 +185,7 @@ quest levelup begin
 
                     n = number(0, 99)
                     i = 0
-                    for i = 1, table.getn(reward_exp) do
+                    for i = 1, #reward_exp do
                         if n < reward_exp[i][2] then
                             pc.give_exp_perc(gameforge.levelup._64_give..lev..gameforge.levelup._66_give, lev, reward_exp[i][1])
                             say_reward(string.format(gameforge.levelup._120_sayReward, reward_exp[i][1]))
@@ -249,9 +249,9 @@ quest levelup begin
 
                 say(string.format(gameforge.levelup._27_say,special.levelup_quest[lev][5]))
 
-                if lev <= table.getn(special.levelup_reward1) then
+                if lev <= #special.levelup_reward1 then
                     raw_script(", "..item_name(special.levelup_reward1[lev][pc.job+1]))
-                elseif lev> table.getn(special.levelup_reward1) and lev < 26 then
+                elseif lev> #special.levelup_reward1 and lev < 26 then
                     raw_script(", "..locale.levelup.random_item)
                 end
                 if lev>=21 then 
@@ -304,9 +304,9 @@ quest levelup begin
 
                         say("")
 
-                        if lev <= table.getn(special.levelup_reward1) then
+                        if lev <= #special.levelup_reward1 then
                             raw_script(","..item_name(special.levelup_reward1[lev][pc.job+1]))
-                        elseif lev> table.getn(special.levelup_reward1) and lev < 26 then
+                        elseif lev> #special.levelup_reward1 and lev < 26 then
                             raw_script(","..locale.levelup.random_item)
                         end	
 
@@ -383,8 +383,8 @@ quest levelup begin
                 return
             end
 
-            if map_index > table.getn(special.lvq_map) then
-                test_chat(string.format(gameforge.levelup._220_chat, map_index..") > max("..table.getn(special.lvq_map)))
+            if map_index > #special.lvq_map then
+                test_chat(string.format(gameforge.levelup._220_chat, map_index..") > max("..#special.lvq_map))
                 return
             end
 

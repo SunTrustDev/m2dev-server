@@ -204,7 +204,7 @@ quest event_easter_2013 begin
 				function(index, item)
 					local itemVnum = item[1]
 					if itemVnum == vnum_to_search then
-						if table.getn(item) > 2 then
+						if #item > 2 then
 							amount_needed = item[3]
 						else
 							amount_needed = 1
@@ -228,7 +228,7 @@ quest event_easter_2013 begin
 					local itemVnum = item[1]
 					local meetsAmountLimit = true
 					-- check if we need more than one easter egg
-					if table.getn(item) > 2 then 
+					if #item > 2 then 
 						if easterEggCount < item[3] then
 							-- player does not have enough eggs for this item
 							meetsAmountLimit = false
@@ -241,7 +241,7 @@ quest event_easter_2013 begin
 					end
 				end
 			)
-			return temp_table[math.random(table.getn(temp_table))]
+			return temp_table[math.random(#temp_table)]
 		end
 
 		

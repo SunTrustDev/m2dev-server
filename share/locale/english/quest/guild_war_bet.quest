@@ -17,17 +17,17 @@ quest guild_war_bet begin
 				gname_table[n] = guild.get_name(p[2])..gameforge.guild_war_bet._35_table..guild.get_name(p[3])
 			end)
 
-			if table.getn(g) == 0 then
+			if #g == 0 then
 				say_title(gameforge.guild_war_bet._40_sayTitle)
 				say(gameforge.guild_war_bet._50_say)
 			else
-				gname_table[table.getn(g)+1] = gameforge.locale.cancel
+				gname_table[#g+1] = gameforge.locale.cancel
 				say_title(gameforge.guild_war_bet._40_sayTitle)
 				say(gameforge.guild_war_bet._60_say)
 
 				local s = select_table(gname_table)
 
-				if s != table.getn(gname_table) then
+				if s != #gname_table then
 					if guild.is_bet(g[s][1]) then
 						say_title(gameforge.guild_war_bet._40_sayTitle)
 						say(gameforge.guild_war_bet._70_say)
@@ -52,11 +52,11 @@ quest guild_war_bet begin
 								price_button_table[n] = p..gameforge.locale.gold
 							end)
 
-							price_button_table[table.getn(price_button_table)+1] =  gameforge.locale.cancel
+							price_button_table[#price_button_table+1] =  gameforge.locale.cancel
 
 							local price_idx = select_table(price_button_table)
 
-							if price_idx != table.getn(price_button_table) then -- ? ??? ?? ??? ???
+							if price_idx != #price_button_table then -- ? ??? ?? ??? ???
 								if pc.gold < guild_war_bet_price_table[price_idx] then
 									say_title(gameforge.guild_war_bet._40_sayTitle)
 									say(gameforge.guild_war_bet._100_say)
@@ -69,7 +69,7 @@ quest guild_war_bet begin
 							end
 						end -- if guild_s != 3
 					end -- if guild.is_bet(g[s][1])
-				end -- if s != table.getn(gname_table)
+				end -- if s != #gname_table
 			end
 		end
 	end

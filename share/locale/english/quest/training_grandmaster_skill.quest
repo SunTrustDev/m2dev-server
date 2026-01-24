@@ -24,7 +24,7 @@ quest training_grandmaster_skill begin
 			local vnum_list = result[1]
 			local name_list = result[2]
 
-			if table.getn(vnum_list) == 0 then
+			if #vnum_list == 0 then
 				say_title(gameforge.training_grandmaster_skill._10_sayTitle)
 				say(gameforge.training_grandmaster_skill._50_say)
 				return
@@ -38,7 +38,7 @@ quest training_grandmaster_skill begin
 
 			local s=select_table(menu_list)
 			
-			if table.getn(menu_list) == s then
+			if #menu_list == s then
 				return
 			end
 

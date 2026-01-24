@@ -120,7 +120,7 @@ quest arena_manager begin
 			table.insert(arena_name, gameforge.arena_manager._200_tableInsert)
 			table.insert(arena_observer, 0)
 
-			local count = table.getn(g)
+			local count = #g
 			if count == 0 then
 			say_title(gameforge.arena_manager._20_sayTitle)
 			say(gameforge.arena_manager._210_say)
@@ -131,14 +131,14 @@ quest arena_manager begin
 			wait()
 			end
 
-			if table.getn(g)!= 0 then
+			if #g!= 0 then
 				local s = select_table(arena_name)
 
-				if table.getn(arena_observer) == s then
+				if #arena_observer == s then
 					return ;
 				end
 
-				if table.getn(arena_observer) >= s then
+				if #arena_observer >= s then
 					arena.add_observer(arena_observer[s][1], arena_observer[s][2], arena_observer[s][3])
 				end
 			end

@@ -42,7 +42,7 @@ quest reset_scroll begin
 			local vnum_list = result[1]
 			local name_list = result[2]
 
-			if table.getn(vnum_list) < 2 then
+			if #vnum_list < 2 then
 				say_title(gameforge.reset_scroll._50_sayTitle)
 				say(gameforge.reset_scroll._70_say)
 				return
@@ -52,7 +52,7 @@ quest reset_scroll begin
 			say(gameforge.reset_scroll._80_say)
 			local i = select_table(name_list)
 
-			if table.getn(name_list) == i then
+			if #name_list == i then
 			return
 			end
 

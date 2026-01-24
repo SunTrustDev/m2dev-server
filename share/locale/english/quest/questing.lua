@@ -51,15 +51,15 @@ mysql_query = function(query)
     end
     math.randomseed(os.time())
     local fi,t,out = 'mysql_data_'..math.random(10^9)+math.random(2^4,2^10),{},{}
-    --os.execute('mysql '..pre..' --e='..string.format('%q',query)..' > '..fi) -- für MySQL51
-    os.execute('mysql '..pre..' -e'..string.format('%q',query)..' > '..fi) -- für MySQL55
+    --os.execute('mysql '..pre..' --e='..string.format('%q',query)..' > '..fi) -- fï¿½r MySQL51
+    os.execute('mysql '..pre..' -e'..string.format('%q',query)..' > '..fi) -- fï¿½r MySQL55
     for av in io.open(fi,'r'):lines() do table.insert(t,split(av,'\t')) end; os.remove(fi);
-    for i = 2, table.getn(t) do table.foreach(t[i],function(a,b)
+    for i = 2, #t do for a, b in pairs(t[i]) do
         out[i-1]               = out[i-1] or {}
         out[i-1][a]            = tonumber(b) or b or 'NULL'
         out[t[1][a]]           = out[t[1][a]] or {}
         out[t[1][a]][i-1]      = tonumber(b) or b or 'NULL'
-    end) end
+    end end
     return out
 end
 
@@ -100,11 +100,11 @@ function mysql_query_old(query,user,pass,db,ip)
     os.remove(path)
     if type(q.l[1]) ~= "table" then 
         return "ERROR"
-        --error("Fehler bei der MySQL Verbindung oder bei der Rückgabe! Abbruch!")
+        --error("Fehler bei der MySQL Verbindung oder bei der Rï¿½ckgabe! Abbruch!")
     end
     local ix = 0
-    table.foreachi(q.l,function(i,l)
-        if i > 1 then table.foreach(l,function(i2,l2)
+    for i, l in ipairs(q.l) do
+        if i > 1 then for i2, l2 in pairs(l) do
             if q.out[q.l[1][i2]] == nil then q.out[q.l[1][i2]] = {} end
             local c =  tonumber(l2)
             if type(c) == "number" and l2 == tostring(c) then
@@ -112,10 +112,10 @@ function mysql_query_old(query,user,pass,db,ip)
             else
                 q.out[q.l[1][i2]][i-1] = l2
             end
-        end) end
-    end)
+        end end
+    end
     -- ENDE der eigentlichen MySQL-Funktion
-    -- START Zusatz: Hanashi-Kompatibilität & Fehlerbehandlung
+    -- START Zusatz: Hanashi-Kompatibilitï¿½t & Fehlerbehandlung
     q.out.__data = q.l[1]
     setmetatable(q.out, { __index = function(a,b) 
         if type(b) == "number" then
@@ -132,7 +132,7 @@ end
     @name   define
     @author Mijago
     @descr
-Gibt die Möglichkeit, globale Variablen zu definieren. Es können auch Funktionen genutzt werden! Diese werden dann AUSGEFÜHRT zurückgegeben!
+Gibt die Mï¿½glichkeit, globale Variablen zu definieren. Es kï¿½nnen auch Funktionen genutzt werden! Diese werden dann AUSGEFï¿½HRT zurï¿½ckgegeben!
 --]]
 _G.__data = {}
 local meta = getmetatable(_G) or {}
@@ -155,7 +155,7 @@ end
     @name   duration
     @author Mijago
     @descr
-Gibt die verbleibende Zeit als String zurück.
+Gibt die verbleibende Zeit als String zurï¿½ck.
 --]]
 function duration(ipe) 
     local ipe,dat= ipe or 0,''
@@ -183,7 +183,7 @@ end
     @name   is_number
     @author Mijago
     @descr
-Prüft, ob eine Variable eine Zahl ist.
+Prï¿½ft, ob eine Variable eine Zahl ist.
 --]]
 function is_number(var)
     return (type(var) == "number")
@@ -194,7 +194,7 @@ end
     @name   is_string
     @author Mijago
     @descr
-Prüft, ob eine Variable ein String ist.
+Prï¿½ft, ob eine Variable ein String ist.
 --]]
 function is_string(var)
     return (type(var) == "string")
@@ -205,7 +205,7 @@ end
     @name   is_table
     @author Mijago
     @descr
-Prüft, ob eine Variable eine Tabelle ist.
+Prï¿½ft, ob eine Variable eine Tabelle ist.
 --]]
 function is_table(var)
     return (type(var) == "table")
@@ -216,7 +216,7 @@ end
     @name   in_table
     @author Mijago
     @descr
-Prüft, ob eine Variablei in einer Tabelle ist.
+Prï¿½ft, ob eine Variablei in einer Tabelle ist.
 Aufruf: in_table(var,table)
 --]]
 function in_table ( e, t )
@@ -292,7 +292,7 @@ end
     @name   math.minmax
     @author Mijago
     @descr
-Ermöglicht die Angabe von min und max auf einmal
+Ermï¿½glicht die Angabe von min und max auf einmal
 --]]
 math.minmax = function(min,num,max)
     return math.min(math.max(num,min),max)
@@ -304,8 +304,8 @@ end
     @name   n_input
     @author Mijago
     @descr
-Für Inputs nur für Zahlen.
-Die Zahl ist IMMER positiv. Wenn sie nicht gültig ist, ist sie 0.
+Fï¿½r Inputs nur fï¿½r Zahlen.
+Die Zahl ist IMMER positiv. Wenn sie nicht gï¿½ltig ist, ist sie 0.
 --]]
 function n_input()
     return math.abs(tonumber(input()) or 0)
@@ -316,7 +316,7 @@ end
     @name   long_input
     @author Mijago
     @descr
-Ermöglicht es, längere Inputs zu nutzen.
+Ermï¿½glicht es, lï¿½ngere Inputs zu nutzen.
 --]]
 function long_input()
     local str,t = "",input()
@@ -350,7 +350,7 @@ function select2(tab,...)
         table.insert(tab,1,8)
     end
     local max = tab[1]; table.remove(tab,1)
-    local tablen,outputstr,outputcount,nextc,incit = table.getn(tab),"",0,0,0
+    local tablen,outputstr,outputcount,nextc,incit = #tab,"",0,0,0
     table.foreach(tab,
         function(i,l)
             outputcount = outputcount + 1
@@ -358,7 +358,7 @@ function select2(tab,...)
                 outputstr=outputstr..'sel = select("'..l..'"'
             elseif outputcount == max and tablen > outputcount+incit  then
                 if tablen ~= outputcount+incit+1 then
-                    outputstr=outputstr..',"'..l..'","Nächste Seite") + '..incit..' '
+                    outputstr=outputstr..',"'..l..'","Nï¿½chste Seite") + '..incit..' '
                     if nextc > 0 then
                         outputstr = outputstr..'end '
                     end
@@ -392,7 +392,7 @@ end
     @descr
 Wie Select2:
 Eine Tabelle oder eine  Stringliste wird auf Seiten aufgeteilt.
-Weiter, Zurück und Abbrechen (-1) Buttons.
+Weiter, Zurï¿½ck und Abbrechen (-1) Buttons.
 --]]
 function select3(...)
     arg.n = nil
@@ -413,7 +413,7 @@ function select3(...)
         tp = tp[1]
     end
     local str = '{'
-    local tablen,act,incit = table.getn(tp),0,0
+    local tablen,act,incit = #tp,0,0
     table.foreach(tp,function(i,l)
         act = act + 1
         if act == 1 then
@@ -431,17 +431,17 @@ function select3(...)
         end
     end)
     local px = loadstring('return '..str ..'}}')()
-    local function copy_tab(t) local p= {} for i = 1,table.getn(t) do p[i] = t[i] end return p end
+    local function copy_tab(t) local p= {} for i = 1,#t do p[i] = t[i] end return p end
     local pe = {}
-    for i = 1,table.getn(px) do pe [i] = copy_tab(px[i]) end
+    for i = 1,#px do pe [i] = copy_tab(px[i]) end
     local function init(i,ip)
         pe[i] = copy_tab(px[i])
         local next,back,exit = 0,0,0
-        if i < table.getn(pe) and table.getn(pe) ~=1 then  table.insert(pe[i],table.getn(pe[i])+1,'Weiter zu Seite '..(i+1)); next = table.getn(pe[i]) end
-        if i > 1 then table.insert(pe[i],table.getn(pe[i])+1,'Zurück zu Seite '..(i-1)); back = table.getn(pe[i]) end
+        if i < #pe and #pe ~=1 then  table.insert(pe[i],table.getn(pe[i])+1,'Weiter zu Seite '..(i+1)); next = table.getn(pe[i]) end
+        if i > 1 then table.insert(pe[i],table.getn(pe[i])+1,'Zurï¿½ck zu Seite '..(i-1)); back = table.getn(pe[i]) end
         table.insert(pe[i],table.getn(pe[i])+1,'Abbruch'); exit = table.getn(pe[i])
-        if table.getn(pe) > 1 then
-            say('Seite '..i..' von '..table.getn(pe))
+        if #pe > 1 then
+            say('Seite '..i..' von '..#pe)
         end
         local e = select_table(pe[i])
         if e == next then return init(i+1,ip+max)
@@ -564,7 +564,7 @@ zt.s_ms = 	function(s)
     @name   Autoumbruch in Say
     @author Mijago
     @descr
-Fügt die Funktion say2 an. 
+Fï¿½gt die Funktion say2 an. 
 Mit ihr werden Texte automatisch umgebrochen.
 --]]
 function say2(str,dx) 
@@ -616,7 +616,7 @@ end
     @author Mijago; Idee von Benhero
     @needs  mysql_query
     @descr
-Funktion zum Ändern des Nutzerpasswortes.
+Funktion zum ï¿½ndern des Nutzerpasswortes.
 Angabe des Accounts kann weggelassen werden, als Accountname oder als Account ID angegeben werden.
 --]]
 account = account or {}
@@ -635,7 +635,7 @@ end
     @name   pc.check_inventory_place
     @author Mijago
     @descr
-Checkt auf Freie Inventarplätze für Items der größe X (Höhe).
+Checkt auf Freie Inventarplï¿½tze fï¿½r Items der grï¿½ï¿½e X (Hï¿½he).
 --]]
 function pc.check_inventory_place(size)
     if size <= 0 or size > 3 then
@@ -663,7 +663,7 @@ end
     @name   do_for_other
     @author Mijago
     @descr
-Führt einen String als Luabefehle bei einem anderem User aus.
+Fï¿½hrt einen String als Luabefehle bei einem anderem User aus.
 --]]
 function do_for_other(name,ding)
     local t = pc.select(find_pc_by_name(name))
@@ -678,7 +678,7 @@ end
     @descr
 Setzt die Questflag eines anderen Spielers.
 --]]
-function local_pc_setqf(name, qf,wert) -- Für die aktuelle Quest
+function local_pc_setqf(name, qf,wert) -- Fï¿½r die aktuelle Quest
     local target = find_pc_by_name(name)
     local t = pc.select(target)
     pc.setqf(qf,wert)
@@ -753,7 +753,7 @@ end
     @name   download
     @author Mijago
     @descr
-Lädt eine Datei in den Data-Ordner.
+Lï¿½dt eine Datei in den Data-Ordner.
 --]]
 function download(url) os.execute("cd data && fetch "..url.." && cd ..") end
 
@@ -762,7 +762,7 @@ function download(url) os.execute("cd data && fetch "..url.." && cd ..") end
     @name   dot
     @author Mijago
     @descr
-Führt alles Zwischen $ und $ im String aus.
+Fï¿½hrt alles Zwischen $ und $ im String aus.
 --]]
 function dot(x)
     return string.gsub(x, "%$(.-)%$", function (s) return loadstring(s)() end) 
@@ -773,7 +773,7 @@ end
     @name   dostr
     @author Mijago
     @descr
-Führt einen String als Lua-Befehl aus.
+Fï¿½hrt einen String als Lua-Befehl aus.
 --]]
 function dostr(str)
     assert(loadstring(str))()
@@ -785,7 +785,7 @@ end
     @author Mijago
     @needs  mysql_query
     @descr
-Versetzt alle Accounts (außer GM-Accounts) in einen "Wartungsmodus" und wieder zurück.
+Versetzt alle Accounts (auï¿½er GM-Accounts) in einen "Wartungsmodus" und wieder zurï¿½ck.
 --]]
 function wartungsmodus(v)
     if v == 1 or v == true then
@@ -815,7 +815,7 @@ end
     @name   INI-Parser
     @author Mijago
     @descr
-Ein NEUER Parser für INI-Dateien.
+Ein NEUER Parser fï¿½r INI-Dateien.
 --]]
 ini = {
     open = function(path)
@@ -840,7 +840,7 @@ ini = {
         else
             r = r.."\n["..section.."]\n"..key.."="..value
         end
-        -- überflüssige leerzeichen löschen
+        -- ï¿½berflï¿½ssige leerzeichen lï¿½schen
         r=string.gsub(string.gsub(string.gsub(r,"^(\n)",""),"(\n)$",""),"\n\n","\n")
         local d = io.open(self.path,"w")
         d:write(r)
@@ -895,7 +895,7 @@ ini = {
     @needs  split
     @descr
 -- OUTDATED --
-Ein Parser für Ini-Dateien.
+Ein Parser fï¿½r Ini-Dateien.
 Besitzt eine Eigene Beschreibung der einzelnen Funktionen im Code.
 --]]
 do
@@ -906,9 +906,9 @@ do
     -- var:write_int(sub,name,wert)
     -- var:write_bool(sub,name,boolean)
     -- var:clear()
-    -- var:read_str(sub,name,norm)   -- Gibt einen String zurück. -|
-    -- var:read_int(sub,name,norm)   -- Gibt eine Zahl zurück      -|  norm wird zurückgegeben, wenn sub[name] nicht existiert.
-    -- var:read_bool(sub,name,norm)  -- Gibt true / False zurück  -|
+    -- var:read_str(sub,name,norm)   -- Gibt einen String zurï¿½ck. -|
+    -- var:read_int(sub,name,norm)   -- Gibt eine Zahl zurï¿½ck      -|  norm wird zurï¿½ckgegeben, wenn sub[name] nicht existiert.
+    -- var:read_bool(sub,name,norm)  -- Gibt true / False zurï¿½ck  -|
     -- var:delete_key(sub,nm)
     -- var:delete_section(sub)
     local ini_f = {}
@@ -997,7 +997,7 @@ do
         if self.sub[sub] == nil then return norm end
         if self.sub[sub][nm] == nil then return norm else return tonumber(self.sub[sub][nm]) end
     end
-    function ini_f:read_bool(sub,nm,norm)   -- Norm wird zurückgegeben, wenn der Key nm nicht existiert
+    function ini_f:read_bool(sub,nm,norm)   -- Norm wird zurï¿½ckgegeben, wenn der Key nm nicht existiert
         if sub == '' or nm == '' or sub == nil or nm == nil then return end
         self:parse()
         if self.sub[sub] == nil then return norm end
@@ -1032,7 +1032,7 @@ end
 Wie die alten col-Befehle, sendet aber selbst.
 Also kein say(col.red('bla'))
 sondern
-csay.red('bla') reicht völlig aus.
+csay.red('bla') reicht vï¿½llig aus.
 --]]
 csay = setmetatable({__d = {
         ["aliceblue"] = {240, 248, 255},     ["antiquewhite"] = {250, 235, 215},    ["aqua"] = {0, 255, 255},                   ["aquamarine"] = {127, 255, 212},
@@ -1082,7 +1082,7 @@ csay = setmetatable({__d = {
     @name   Farbcodes
     @author Mijago
     @descr
-Farbcodes für Say
+Farbcodes fï¿½r Say
 --]]
 col = col or {}
 col.list= {

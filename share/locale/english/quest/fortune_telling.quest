@@ -67,7 +67,7 @@ quest fortune_telling begin
 
 			local i
 			local idx
-			for i = 1, table.getn(special.fortune_telling) do
+			for i = 1, #special.fortune_telling do
 				if n<=special.fortune_telling[i][1] then
 					idx = i
 					break
